@@ -158,13 +158,13 @@ do_tick(Tasks0, Queue0, P2N0, N2P0) ->
     0 -> {Tasks0, Queue0, P2N0, N2P0};
     _ -> Now = crontab_time:now(),
          case gb_trees:take_smallest(Queue0) of
-           {{Time, Name}, Name, Queue1}
+           {{Time, Name}, Name2, Queue1}
              when Time =< Now ->
              Task           = gb_trees:get(Name, Tasks0),
              {P2N, N2P}     = try_start(Name, Task, P2N0, N2P0),
              {Tasks, Queue} = try_schedule(Name, Task, Tasks0, Queue1),
              do_tick(Tasks, Queue, P2N, N2P);
-           {{_Time, _Name}, _Name, _Queue} ->
+           {{_Time, _Name}, _Name2, _Queue} ->
              {Tasks0, Queue0, P2N0, N2P0}
          end
   end.
